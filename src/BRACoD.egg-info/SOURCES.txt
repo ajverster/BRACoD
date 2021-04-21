@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+data/OTUCounts_obesitystudy.csv
+src/BRACoD/BRACoD.py
+src/BRACoD/__init__.py
+src/BRACoD/simulations.py
+src/BRACoD.egg-info/PKG-INFO
+src/BRACoD.egg-info/SOURCES.txt
+src/BRACoD.egg-info/dependency_links.txt
+src/BRACoD.egg-info/requires.txt
+src/BRACoD.egg-info/top_level.txt
