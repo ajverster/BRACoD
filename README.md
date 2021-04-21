@@ -11,9 +11,10 @@ Walkthrough
 
 1. Simulate some data and normalize it
 
-    ```sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.example_otu_data)
-    sim_relab = BRACoD.scale_counts(sim_counts)```
-
+    ```
+    sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.example_otu_data)
+    sim_relab = BRACoD.scale_counts(sim_counts)
+    ```
 
 2. Run BRACoD
 
