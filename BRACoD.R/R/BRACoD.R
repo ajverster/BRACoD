@@ -87,3 +87,12 @@ score <- function(bugs_identified, bugs_actual) {
   return(BRACoD$score(bugs_identified, bugs_actual))
 }
 
+
+#' Remove NULL values in your OTU and environmental variable
+#'
+#' This will remove samples that are NULL in the environmental variable, as well as
+#' the corresponding samples in your relative abundance data.
+#' @export
+remove_null <- function(df_relab, Y) {
+  return(BRACoD$remove_null(df_relab, Y))
+}
