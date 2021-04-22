@@ -1,11 +1,12 @@
 # BRACoD
 
-Installation: 
+Installation in python: 
 
     pip install BRACoD
 
-If you want to use the R interface, install reticulate in R
+There is also an R interface, which depends on the python version being installed. There is a helper function that will do it for you, but it might be easier to do it with pip.
 
+    devtools::install_github("ajverster/BRACoD/BRACoD.R")
 
 Walkthrough
 
