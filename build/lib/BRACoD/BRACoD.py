@@ -38,10 +38,10 @@ def check_chains_equal(trace):
     :return:
     """
     n_chains = trace.nchains
-    inclusion_perchain = np.zeros((trace.get_values('b').shape[1], n_chains))
+    inclusion_perchain = np.zeros((trace.get_values('p').shape[1], n_chains))
 
     for i in range(n_chains):
-        inclusion_perchain[:,i] = trace.get_values('b', chains=[i]).sum(0) / trace.get_values('b', chains=[i]).shape[0]
+        inclusion_perchain[:,i] = trace.get_values('p', chains=[i]).sum(0) / trace.get_values('p', chains=[i]).shape[0]
         
     # Your chains are radically different
     radically_different = np.where(np.apply_along_axis(lambda x: np.max(x) - np.min(x),1,inclusion_perchain) > 0.5)[0]
@@ -57,7 +57,7 @@ def get_positives(trace, inclusion_cutoff=0.30):
     :param inclusion_cutoff:
     :return:
     """
-    inclusion_full = trace.get_values('b').sum(0) / trace.get_values('b').shape[0]
+    inclusion_full = trace.get_values('p').sum(0) / trace.get_values('p').shape[0]
     found_full = np.where(inclusion_full >= inclusion_cutoff)[0]
     return inclusion_full, found_full
 
@@ -75,8 +75,8 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
         inclusion_full, pos_values = get_positives(trace)
         all_chains = list(range(trace.nchains))
         halfway = int(trace.nchains/2)
-        inclusion_1 = trace.get_values('b', chains=all_chains[:halfway]).sum(0) / trace.get_values('b', chains=all_chains[:halfway]).shape[0]
-        inclusion_2 = trace.get_values('b', chains=all_chains[halfway:]).sum(0) / trace.get_values('b', chains=all_chains[halfway:]).shape[0]
+        inclusion_1 = trace.get_values('p', chains=all_chains[:halfway]).sum(0) / trace.get_values('p', chains=all_chains[:halfway]).shape[0]
+        inclusion_2 = trace.get_values('p', chains=all_chains[halfway:]).sum(0) / trace.get_values('p', chains=all_chains[halfway:]).shape[0]
         found1 = set(np.where(inclusion_1 >= inclusion_cutoff)[0])
         found2 = set(np.where(inclusion_2 >= inclusion_cutoff)[0])
         found_uncertain = np.array(list((found1 - found2).union(found2 - found1)))
@@ -95,15 +95,15 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
         # Check the effective number of samples for the positive bugs
         ess_data = diagnostics.ess(trace)
         rhat_values = diagnostics.rhat(trace)
-        effn_b = ess_data["b"] 
+        effn_p = ess_data["p"] 
         effn_betas_one = ess_data["betas_one"] 
-        gr_b = rhat_values["b"]
+        gr_p = rhat_values["p"]
         gr_betas_one = rhat_values["betas_one"]
-        if (any(effn_b[pos_values] < 200) | any(effn_betas_one[pos_values] < 200)):
+        if (any(effn_p[pos_values] < 200) | any(effn_betas_one[pos_values] < 200)):
             logging.warning("Warning! Some parameters have an effective sample size less than 200.")
             logging.warning("Either Rerun with more steps or be wary of including them in your interpretation.")
-            if any(effn_b[pos_values] <= 200):
-                problem_bugs = pos_values[np.where(effn_b[pos_values] < 200)[0]]
+            if any(effn_p[pos_values] <= 200):
+                problem_bugs = pos_values[np.where(effn_p[pos_values] < 200)[0]]
                 if df_otus is not None:
                     problem_bugs = df_otus.columns[problem_bugs]
                 logging.warning("The effective n for the p variable is less than 200 for the following bugs {}".format(problem_bugs))
@@ -113,7 +113,7 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
                     problem_bugs = df_otus.columns[problem_bugs]
                 logging.warning("The effective n for the beta variable is less than 200 for the following bugs {}".format(problem_bugs))
 
-        if (any(gr_b[pos_values] >= 1.2) | any(gr_betas_one[pos_values] >= 1.2)):
+        if (any(gr_p[pos_values] >= 1.2) | any(gr_betas_one[pos_values] >= 1.2)):
             logging.warning("Warning! Some parameters have a Gelman-Rubin statistic greater than 1.2.")
     else:
         print("You need at least 2 chains to do convergence tests.")
@@ -212,7 +212,7 @@ def run_bracod(X_prop: np.array, Y: np.array, n_sample: int = 1000, n_burn: int 
         X_Ab = pm.Deterministic('abs_ab', pm.math.log(X_prop))
 
         # Inclusion value
-        b = pm.Bernoulli("b", inclusion_prior, shape=n_bugs)
+        p = pm.Bernoulli("p", inclusion_prior, shape=n_bugs)
 
         # Either set tau, or estimate it from the model
         if tau_fixed is None:
@@ -224,7 +224,7 @@ def run_bracod(X_prop: np.array, Y: np.array, n_sample: int = 1000, n_burn: int 
         # betas * b (zero or 1) is variable selection. It zeros out variables that aren't included
         betas_one = pm.Normal('betas_one', mu=0, sd=tau * g, shape=n_bugs, testval=0.)
         betas_zero = pm.Normal('betas_zero', mu=0, sd=tau, shape=n_bugs, testval=0.)
-        betas_slab = pm.Deterministic('beta_slab', (1 - b) * betas_zero + b * betas_one)
+        betas_slab = pm.Deterministic('beta_slab', (1 - p) * betas_zero + p * betas_one)
 
         # Regression intercept
         alpha = pm.Normal("alpha", mu=Y.mean(), sd=100)

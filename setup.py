@@ -1,6 +1,6 @@
 import setuptools
 
-__version__ = '0.1.30'
+__version__ = '0.2.0'
 __author__ = ['Adrian Verster']
 __email__ = 'adrian.verster@canada.ca'
 
@@ -23,8 +23,6 @@ setuptools.setup(
     url="https://github.com/ajverster/BRACoD/tree/main",
     include_package_data=True,  # Must be supplemented by MANIFEST.in file containing paths to extra files
     package_dir={"": "src"},
-    #package_data={'BRACoD': ['data/*.csv']},
-    #data_files=[((os.path.join(sys.prefix, 'share/mypackage/'), ['BRACoD/data/OTUCounts_obesitystudy.csv'])],
     packages=setuptools.find_packages(where="src"),
     version=__version__,
     author=__author__,
