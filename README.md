@@ -12,32 +12,32 @@ There is also an R interface, which depends on the python version being installe
 
 1. Simulate some data and normalize it
 
-    ```
+    ```python
     sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.example_otu_data)
     sim_relab = BRACoD.scale_counts(sim_counts)
     ```
 
 2. Run BRACoD
 
-    ```
+    ```python
     trace = BRACoD.run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
     ```
     
 3. Examine the diagnostics
 
-    ```
+    ```python
     BRACoD.convergence_tests(trace, sim_relab)
     ```
 
 4. Examine the results
 
-    ```
+    ```python
     df_results = BRACoD.summarize_trace(trace, sim_counts.columns, 0.3)
     ```
 
 5. Compare the results to the simulated truth
 
-    ```
+    ```python
     bugs_identified = df_results["bugs"].values
     bugs_actual = np.where(contributions != 0)[0]
 
@@ -47,7 +47,7 @@ There is also an R interface, which depends on the python version being installe
 
 6. Try with your real data. We have included some functions to help you threshold and process your data
     
-    ```
+    ```python
     df_counts = BRACoD.threshold_count_data(df_counts)
     df_rel = BRACoD.scale_counts(df_counts)
     df_rel, Y = remove_null(df_rel, Y)
