@@ -35,7 +35,7 @@ install_bracod <- function(method = "auto", conda = "auto") {
 #' @param n_samples_use number of microbiome samples to simulate. If NULL, uses the same number of samples as in your dataframe
 #' @export
 simulate_microbiome_counts <- function(df, n_contributors = 20, coeff_contributor = 0.0, min_ab_contributor = -9, sd_Y = 1.0, n_reads = 100000, var_contributor = 5.0, use_uniform = TRUE, n_samples_use = NULL, corr_value = NULL, var_factor = NULL, return_absolute = FALSE, seed = NULL) {
-  return(BRACoD$simulate_microbiome_counts(df, n_contributors = n_contributrors, coeff_contributor = coeff_contributor, min_ab_contributor = min_ab_contributor, sd_Y = sd_Y, n_reads = n_reads, var_contributor = var_contributor, use_uniform = use_uniform, n_samples_use = n_samples_use, corr_value = corr_value, var_factor = var_factor, return_absolute = return_absolute, seed = seed))
+  return(BRACoD$simulate_microbiome_counts(df, n_contributors = n_contributors, coeff_contributor = coeff_contributor, min_ab_contributor = min_ab_contributor, sd_Y = sd_Y, n_reads = n_reads, var_contributor = var_contributor, use_uniform = use_uniform, n_samples_use = n_samples_use, corr_value = corr_value, var_factor = var_factor, return_absolute = return_absolute, seed = seed))
 }
 
 
