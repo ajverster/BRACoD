@@ -53,11 +53,11 @@ def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor
     if var_contributor is None:
         var_contributor = coeff_contributor * 0.25
     if not use_uniform:
-        beta_contributor = list( np.random.normal(coeff_contributor, scale = var_contributor, size = n_contributors) )
+        beta_contributor = list( np.random.normal(coeff_contributor, scale = var_contributor, size = int(n_contributors) ))
     else:
-        beta_contributor = list( np.random.uniform(coeff_contributor - var_contributor, coeff_contributor + var_contributor, size = n_contributors) )
+        beta_contributor = list( np.random.uniform(coeff_contributor - var_contributor, coeff_contributor + var_contributor, size = int(n_contributors) ))
 
-    beta = np.array(beta_contributor + [0 for i in range(n_decoys)])
+    beta = np.array(beta_contributor + [0 for i in range(int(n_decoys))])
 
     Y = np.random.normal(X.dot(beta), scale=sd_Y)
     Y = Y - np.mean(Y)
@@ -67,7 +67,7 @@ def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor
 
     X_nonlog = np.exp(X)
     X_rel = np.apply_along_axis(lambda x: x / np.sum(x), 1, X_nonlog)
-    X_counts = np.apply_along_axis(lambda x: np.random.multinomial(n_reads, x), 1, X_rel)
+    X_counts = np.apply_along_axis(lambda x: np.random.multinomial(int(n_reads), x), 1, X_rel)
     df_counts = pd.DataFrame(X_counts)
     df_counts.columns = df_relab.columns
     df_counts.index = df_relab.index

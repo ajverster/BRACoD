@@ -46,6 +46,12 @@ simulate_microbiome_counts <- function(df, n_contributors = 20, coeff_contributo
 #' @param df A dataframe of OTU counts. Samples are rows and bacteria are columns.
 #' @export
 scale_counts <- function(df_counts) {
+  # Check if this is legitimately counts data
+  stopifnot(all(apply(df_counts, 1, function(x) all(x == as.integer(x)))))
+  
+  # Frequently, R and python conversion results in a "double" dataframe that has counts data. We need to fix that
+  df_counts <- apply(df_counts, 1, function(x) as.integer(x))
+
   return(BRACoD$scale_counts(df_counts))
 }
 
