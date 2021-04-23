@@ -65,7 +65,7 @@ scale_counts <- function(df_counts) {
 #' @param n_burn number of burn-in steps before actual sampling stops.
 #' @param njobs number of parallel MCMC chains to run.
 #' @export
-run_bracod <- function(df_relabl, env_var, n_sample=1000, n_burn=1000, njobs=4) {
+run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
   return(BRACoD$run_bracod(df_relab, env_var, n_sample = n_sample, n_burn=n_burn, njobs=njobs))
 }
 
