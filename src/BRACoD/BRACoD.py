@@ -9,7 +9,7 @@ import typing
 import logging
 
 import theano
-theano.config.blas.ldflags = '-lf77blas -latlas -lgfortran'
+#theano.config.blas.ldflags = '-lf77blas -latlas -lgfortran'
 
 def scale_counts(df):
     """
@@ -81,11 +81,12 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
         found2 = set(np.where(inclusion_2 >= inclusion_cutoff)[0])
         found_uncertain = np.array(list((found1 - found2).union(found2 - found1)))
         # Only accept the uncertain if the difference in inclusion probabilities is substantial
-        difference = np.absolute(inclusion_1[found_uncertain] - inclusion_2[found_uncertain])
+        if len(found_uncertain) > 0:
+            difference = np.absolute(inclusion_1[found_uncertain] - inclusion_2[found_uncertain])
         
-        if len(found_uncertain[difference > 0.1]) > 0:
-             logging.warning("Warning! The following bugs were found in only one of the chains: {}".format(
-                " ".join([str(x) for x in found_uncertain])))
+            if len(found_uncertain[difference > 0.1]) > 0:
+                 logging.warning("Warning! The following bugs were found in only one of the chains: {}".format(
+                    " ".join([str(x) for x in found_uncertain])))
 
         diff = check_chains_equal(trace)
         if diff is not None:
