@@ -79,7 +79,7 @@ There is also an R interface, which depends on the python version being installe
 3. Examine the diagnostics
 
     ```R
-    BRACoD.convergence_tests(trace, sim_relab)
+    convergence_tests(trace, sim_relab)
     ```
 
 4. Examine the results

@@ -102,3 +102,16 @@ score <- function(bugs_identified, bugs_actual) {
 remove_null <- function(df_relab, Y) {
   return(BRACoD$remove_null(df_relab, Y))
 }
+
+
+#' Perform convergence tests on the p and beta variables
+#'
+#' You may get errors are divergence of some variables after pymc3 samples the posterior.
+#' We are not overly concerned about some of the variables, such as the variance, rather
+#' we are really interested in the inclusion probabilities (p) and contribution coefficients
+#' (beta). The convergence tests that are included here focus on evaluating those two variables.
+#' @export
+convergence_tests <- function(trace, sim_relab) {
+  BRACoD$convergence_tests(trace, sim_relab)
+}
+
