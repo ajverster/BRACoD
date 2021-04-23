@@ -1,5 +1,7 @@
 # BRACoD
 
+### Installation
+
 Installation in python: 
 
     pip install BRACoD
