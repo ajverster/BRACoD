@@ -13,6 +13,7 @@ There is also an R interface, which depends on the python version being installe
 1. Simulate some data and normalize it
 
     ```python
+    import BRACoD
     sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.example_otu_data)
     sim_relab = BRACoD.scale_counts(sim_counts)
     ```
