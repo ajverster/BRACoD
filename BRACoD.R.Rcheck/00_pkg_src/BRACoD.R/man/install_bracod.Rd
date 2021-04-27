@@ -6,11 +6,6 @@
 \usage{
 install_bracod(method = "auto", conda = "auto")
 }
-\arguments{
-\item{method}{passed to reticulate::py_install}
-
-\item{conda}{passed to reticulate::py_install}
-}
 \description{
 Uses pip to install the latest BRACoD release in python. You might need
 to specify a python environment with either reticulate::use_virtualenv or

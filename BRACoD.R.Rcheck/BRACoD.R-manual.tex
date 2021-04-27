@@ -1,0 +1,185 @@
+\nonstopmode{}
+\documentclass[letterpaper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} % @SET ENCODING@
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `BRACoD.R'}}
+\par\bigskip{\large \today}
+\end{center}
+\begin{description}
+\raggedright{}
+\inputencoding{utf8}
+\item[Title]\AsIs{BRACoD is a Bayesian Method to Find Associations Between
+Bacteria and Physiological Variables in Microbiome Data}
+\item[Version]\AsIs{0.0.0.9000}
+\item[Description]\AsIs{This package runs the python implementation of BRACoD using reticulate. The goal of BRACoD is to identify associations between bacteria and an environmental variable in 16S or other compositional data. The environmental variable is any variable which is measure for each microbiome sample, for example, a butyrate measurement paired with every sample in the data. Microbiome data is compositional, meaning that the total abundance of each sample sums to 1, and this introduces severe statistical distortions. BRACoD takes a Bayesian approach to correcting for these statistical distortions, in which the total abundance is treated as an unknown variable.}
+\item[Imports]\AsIs{reticulate}
+\item[Config/reticulate]\AsIs{list( packages = list( list(package = ``BRACoD'') ) )}
+\item[License]\AsIs{use\_mit\_license()}
+\item[Encoding]\AsIs{UTF-8}
+\item[LazyData]\AsIs{true}
+\item[Roxygen]\AsIs{list(markdown = TRUE)}
+\item[RoxygenNote]\AsIs{7.1.1.9001}
+\item[NeedsCompilation]\AsIs{no}
+\item[Author]\AsIs{Adrian Verster [aut, cre]}
+\item[Maintainer]\AsIs{Adrian Verster }\email{adrian.verster@canada.ca}\AsIs{}
+\item[Depends]\AsIs{R (>= 3.5.0)}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{install\_bracod}{Install BRACoD in python}{install.Rul.bracod}
+%
+\begin{Description}\relax
+Uses pip to install the latest BRACoD release in python. You might need
+to specify a python environment with either reticulate::use\_virtualenv or
+reticulate::use\_condaenv.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+install_bracod(method = "auto", conda = "auto")
+\end{verbatim}
+\end{Usage}
+\inputencoding{utf8}
+\HeaderA{run\_bracod}{Run the main BRACoD algorithm}{run.Rul.bracod}
+%
+\begin{Description}\relax
+Uses pymc3 to sample the posterior of the model to determine bacteria that are
+associated with your environmental variable.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+run_bracod(df_relabl, env_var, n_sample = 1000, n_burn = 1000, njobs = 4)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{env\_var}] the environmnetal variable you are evaluating. You need 1 measurement associated with each sample.
+
+\item[\code{n\_sample}] number of posterior samples.
+
+\item[\code{n\_burn}] number of burn-in steps before actual sampling stops.
+
+\item[\code{njobs}] number of parallel MCMC chains to run.
+
+\item[\code{df}] A dataframe of relative microbiome abundances. Samples are rows and bacteria are columns.
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{scale\_counts}{Normalize OTU counts and add a pseudo count}{scale.Rul.counts}
+%
+\begin{Description}\relax
+BRACoD requires relative abundance and cannot handle zeros, so this function
+adds a small pseudo count (1/10th the smallest non-zero value).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+scale_counts(df_counts)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{df}] A dataframe of OTU counts. Samples are rows and bacteria are columns.
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{score}{Score the results of BRACoD}{score}
+%
+\begin{Description}\relax
+This calculate the precision, recall and F1 of your BRACoD results if you know
+the ground truth, ie. if this is simulated data.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+score(bugs_identified, bugs_actual)
+\end{verbatim}
+\end{Usage}
+\inputencoding{utf8}
+\HeaderA{simulate\_microbiome\_counts}{Simulate microbiome counts}{simulate.Rul.microbiome.Rul.counts}
+%
+\begin{Description}\relax
+Each bacteria's absolute abundance is simulated from a lognormal distribution.
+Then, convert each sample to relative abundance, and simulate sequencing counts
+using a multinomial distribution, based on the desired number of reads and the
+simulated relative abundances. This also simulates an environmntal variable that
+is produced by some of the bacteria.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+simulate_microbiome_counts(
+  df,
+  n_contributors = 20,
+  coeff_contributor = 0,
+  min_ab_contributor = -9,
+  sd_Y = 1,
+  n_reads = 1e+05,
+  var_contributor = 5,
+  use_uniform = TRUE,
+  n_samples_use = NULL,
+  corr_value = NULL,
+  var_factor = NULL,
+  return_absolute = FALSE,
+  seed = NULL
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{df}] A dataframe of OTU counts that is a model for data simulation. Samples are rows and bacteria are columns.
+
+\item[\code{n\_contributors}] the number of bacteria that are to contribute to your environmental variable.
+
+\item[\code{coeff\_contributor}] the average of the distribution used to simulate the contribution coefficient.
+
+\item[\code{min\_ab\_contributor}] The minimum log relative abundance, averaged across samples, to include a bacteria
+
+\item[\code{sd\_Y}] the standard deviation of the simulated environmental variable
+
+\item[\code{n\_reads}] the number of reads to be simulated per sample
+
+\item[\code{var\_contributor}] If you use a uniform distribution, this is the range of the distribution, with a normal distribution it is the variance used to simulate the contribution coefficient.
+
+\item[\code{use\_uniform}] use a uniform distribution to simulate the contribution coefficient. Alternative is the normal distribution.
+
+\item[\code{n\_samples\_use}] number of microbiome samples to simulate. If NULL, uses the same number of samples as in your dataframe
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{summarize\_trace}{Summarize the results of BRACoD}{summarize.Rul.trace}
+%
+\begin{Description}\relax
+This summarizes the trace object that run\_bracod() returns. It returns a dataframe
+that contains two parameters of interest, the average inclusion (p) and the average
+coefficient (beta), telling you the association between that bacteria and the environmental
+variable
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+summarize_trace(trace, bug_names = NULL, cutoff = 0.3)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{trace}] the pymc3 object that is the output of run\_bracod()
+
+\item[\code{bug\_names}] optional, a list of names of the bacteria to include in the results
+
+\item[\code{cutoff}] this is the cutoff on the average inclusion for inclusion
+\end{ldescription}
+\end{Arguments}
+\printindex{}
+\end{document}

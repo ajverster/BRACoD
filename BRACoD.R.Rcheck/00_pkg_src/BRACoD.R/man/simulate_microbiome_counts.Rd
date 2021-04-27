@@ -15,6 +15,7 @@ simulate_microbiome_counts(
   use_uniform = TRUE,
   n_samples_use = NULL,
   corr_value = NULL,
+  var_factor = NULL,
   return_absolute = FALSE,
   seed = NULL
 )
@@ -37,17 +38,11 @@ simulate_microbiome_counts(
 \item{use_uniform}{use a uniform distribution to simulate the contribution coefficient. Alternative is the normal distribution.}
 
 \item{n_samples_use}{number of microbiome samples to simulate. If NULL, uses the same number of samples as in your dataframe}
-
-\item{corr_value}{the bug-bug correlation value you want to include in the simulation}
-
-\item{return_absolute}{returns the abosulte abundance values instead of the simulated microbiome counts}
-
-\item{seed}{random seed for reproducibility}
 }
 \description{
 Each bacteria's absolute abundance is simulated from a lognormal distribution.
 Then, convert each sample to relative abundance, and simulate sequencing counts
 using a multinomial distribution, based on the desired number of reads and the
-simulated relative abundances. This also simulates an environmental variable that
+simulated relative abundances. This also simulates an environmntal variable that
 is produced by some of the bacteria.
 }

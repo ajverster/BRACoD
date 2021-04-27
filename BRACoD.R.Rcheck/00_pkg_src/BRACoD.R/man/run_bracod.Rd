@@ -4,18 +4,18 @@
 \alias{run_bracod}
 \title{Run the main BRACoD algorithm}
 \usage{
-run_bracod(df_relab, env_var, n_sample = 1000, n_burn = 1000, njobs = 4)
+run_bracod(df_relabl, env_var, n_sample = 1000, n_burn = 1000, njobs = 4)
 }
 \arguments{
-\item{df_relab}{A dataframe of relative microbiome abundances. Samples are rows and bacteria are columns.}
-
-\item{env_var}{the environmental variable you are evaluating. You need 1 measurement associated with each sample.}
+\item{env_var}{the environmnetal variable you are evaluating. You need 1 measurement associated with each sample.}
 
 \item{n_sample}{number of posterior samples.}
 
 \item{n_burn}{number of burn-in steps before actual sampling stops.}
 
 \item{njobs}{number of parallel MCMC chains to run.}
+
+\item{df}{A dataframe of relative microbiome abundances. Samples are rows and bacteria are columns.}
 }
 \description{
 Uses pymc3 to sample the posterior of the model to determine bacteria that are

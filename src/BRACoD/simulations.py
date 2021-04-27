@@ -4,7 +4,7 @@ import pandas as pd
 import argparse
 import BRACoD
 
-def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor = 0.0, min_ab_contributor = -9, sd_Y = 1.0, n_reads = 100000, var_contributor = 5.0, use_uniform = True, n_samples_use = None, corr_value = None, var_factor = None, return_absolute = False, seed = None):
+def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor = 0.0, min_ab_contributor = -9, sd_Y = 1.0, n_reads = 100000, var_contributor = 5.0, use_uniform = True, n_samples_use = None, corr_value = None, return_absolute = False, seed = None):
     if seed is None:
         np.random.seed(seed)
 
@@ -29,9 +29,6 @@ def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor
     # Average and sd of each bug
     mu = df_relab.apply(lambda x: np.mean(np.log(x + pseudo)), 0)
     var = df_relab.apply(lambda x: np.var(np.log(x + pseudo)), 0)
-
-    if var_factor is not None:
-        var = var * var_factor
 
     Sigma = np.diag(var)
     # Add in some inter-microbe correlations if you want

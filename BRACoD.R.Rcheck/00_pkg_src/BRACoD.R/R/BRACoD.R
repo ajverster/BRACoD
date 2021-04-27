@@ -2,6 +2,7 @@
 .onLoad <- function(libname, pkgname) {
   packageStartupMessage("Welcome to BRACoD. You need the python version of BRACoD for this to work. Use the function install_bracod() to install it.")
   BRACoD <<- reticulate::import("BRACoD", delay_load = TRUE)
+
 }
 
 
@@ -10,8 +11,6 @@
 #' Uses pip to install the latest BRACoD release in python. You might need
 #' to specify a python environment with either reticulate::use_virtualenv or
 #' reticulate::use_condaenv. 
-#' @param method passed to reticulate::py_install
-#' @param conda passed to reticulate::py_install
 #' @export
 install_bracod <- function(method = "auto", conda = "auto") {
   reticulate::py_install("BRACoD", method = method, conda = conda, pip=TRUE)
@@ -23,7 +22,7 @@ install_bracod <- function(method = "auto", conda = "auto") {
 #' Each bacteria's absolute abundance is simulated from a lognormal distribution.
 #' Then, convert each sample to relative abundance, and simulate sequencing counts
 #' using a multinomial distribution, based on the desired number of reads and the 
-#' simulated relative abundances. This also simulates an environmental variable that
+#' simulated relative abundances. This also simulates an environmntal variable that
 #' is produced by some of the bacteria.
 #' @param df A dataframe of OTU counts that is a model for data simulation. Samples are rows and bacteria are columns.
 #' @param n_contributors the number of bacteria that are to contribute to your environmental variable.
@@ -64,19 +63,11 @@ scale_counts <- function(df_counts) {
 #' Uses pymc3 to sample the posterior of the model to determine bacteria that are
 #' associated with your environmental variable.
 #' @param df_relab A dataframe of relative microbiome abundances. Samples are rows and bacteria are columns.
-#' @param env_var the environmental variable you are evaluating. You need 1 measurement associated with each sample.
+#' @param env_var the environmnetal variable you are evaluating. You need 1 measurement associated with each sample.
 #' @param n_sample number of posterior samples.
 #' @param n_burn number of burn-in steps before actual sampling stops.
 #' @param njobs number of parallel MCMC chains to run.
 #' @export
-#' @examples
-#' data(obesity)
-#' r <- simulate_microbiome_counts(obesity)
-#' sim_counts <- r[[1]]
-#' sim_y <- r[[2]]
-#' contributions <- r[[3]]
-#' sim_relab <- scale_counts(sim_counts)
-#' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
 run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
   return(BRACoD$run_bracod(df_relab, env_var, n_sample = n_sample, n_burn=n_burn, njobs=njobs))
 }
@@ -92,9 +83,6 @@ run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
 #' @param bug_names optional, a list of names of the bacteria to include in the results
 #' @param cutoff this is the cutoff on the average inclusion for inclusion
 #' @export
-#' @examples
-#' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
-#' df_summary <- summarize_trace(trace, colnames(sim_relab))
 summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
   return(BRACoD$summarize_trace(trace, bug_names, cutoff))
 }
@@ -106,18 +94,6 @@ summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
 #' @param bugs_identified a list of integers corresponding to the indicies of the bugs you identified with BRACoD
 #' @param bugs_actual a list of integers corresponding to the indicies of the bugs that truely contribute to butyrate levels
 #' @export
-#' @examples
-#' df_summary <- summarize_trace(trace, colnames(sim_relab))
-#' bugs_identified <- df_summary$bugs
-#' bugs_actual <- which(contributions != 0)
-#' 
-#' r <- score(bugs_identified, bugs_actual)
-#' 
-#' precision <- r[[1]]
-#' recall <- r[[2]]
-#' f1 <- r[[3]]
-#' 
-#' print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f",precision, recall, f1))
 score <- function(bugs_identified, bugs_actual) {
   return(BRACoD$score(bugs_identified, bugs_actual))
 }
@@ -141,10 +117,8 @@ remove_null <- function(df_relab, Y) {
 #' We are not overly concerned about some of the variables, such as the variance, rather
 #' we are really interested in the inclusion probabilities (p) and contribution coefficients
 #' (beta). The convergence tests that are included here focus on evaluating those two variables.
-#' @param trace the output of run_bracod()
-#' @param df_relab the microbiome relative abundance
 #' @export
-convergence_tests <- function(trace, df_relab) {
-  BRACoD$convergence_tests(trace, df_relab)
+convergence_tests <- function(trace, sim_relab) {
+  BRACoD$convergence_tests(trace, sim_relab)
 }
 

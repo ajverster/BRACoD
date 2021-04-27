@@ -1,5 +1,6 @@
 Package: BRACoD.R
-Title: BRACoD is a Bayesian Method to Find Associations Between Bacteria and Physiological Variables in Microbiome Data
+Title: BRACoD is a Bayesian Method to Find Associations Between
+        Bacteria and Physiological Variables in Microbiome Data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Adrian",
@@ -7,19 +8,15 @@ Authors@R:
 	   role=c("aut","cre"),
            email = "adrian.verster@canada.ca")
 Description: This package runs the python implementation of BRACoD using reticulate. The goal of BRACoD is to identify associations between bacteria and an environmental variable in 16S or other compositional data. The environmental variable is any variable which is measure for each microbiome sample, for example, a butyrate measurement paired with every sample in the data. Microbiome data is compositional, meaning that the total abundance of each sample sums to 1, and this introduces severe statistical distortions. BRACoD takes a Bayesian approach to correcting for these statistical distortions, in which the total abundance is treated as an unknown variable.
-Imports:
-  reticulate
-Config/reticulate:
-  list(
-    packages = list(
-      list(package = "BRACoD")
-    )
-  )
-License: MIT + file LICENSE
+Imports: reticulate
+Config/reticulate: list( packages = list( list(package = "BRACoD") ) )
+License: use_mit_license()
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1.9001
-Suggests: 
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
+NeedsCompilation: no
+Packaged: 2021-04-26 12:37:28 UTC; averster
+Author: Adrian Verster [aut, cre]
+Maintainer: Adrian Verster <adrian.verster@canada.ca>
+Depends: R (>= 3.5.0)

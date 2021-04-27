@@ -7,7 +7,7 @@
 scale_counts(df_counts)
 }
 \arguments{
-\item{df_counts}{A dataframe of OTU counts. Samples are rows and bacteria are columns.}
+\item{df}{A dataframe of OTU counts. Samples are rows and bacteria are columns.}
 }
 \description{
 BRACoD requires relative abundance and cannot handle zeros, so this function

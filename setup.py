@@ -1,6 +1,6 @@
 import setuptools
 
-__version__ = '0.2.1'
+__version__ = '0.2.3'
 __author__ = ['Adrian Verster']
 __email__ = 'adrian.verster@canada.ca'
 
@@ -16,7 +16,7 @@ setuptools.setup(
                       'arviz<=0.10',
                       'Theano>=1.0.5'
                       ],
-    python_requires='>3.7',
+    python_requires='>3.6',
     description="BRACoD is a method to identify associations between bacteria and physiological variables in Microbiome data",
     long_description=long_description,
     long_description_content_type="text/markdown",

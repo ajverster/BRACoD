@@ -6,11 +6,6 @@
 \usage{
 score(bugs_identified, bugs_actual)
 }
-\arguments{
-\item{bugs_identified}{a list of integers corresponding to the indicies of the bugs you identified with BRACoD}
-
-\item{bugs_actual}{a list of integers corresponding to the indicies of the bugs that truely contribute to butyrate levels}
-}
 \description{
 This calculate the precision, recall and F1 of your BRACoD results if you know
 the ground truth, ie. if this is simulated data.

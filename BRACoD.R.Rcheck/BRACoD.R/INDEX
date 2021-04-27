@@ -1,0 +1,7 @@
+install_bracod          Install BRACoD in python
+run_bracod              Run the main BRACoD algorithm
+scale_counts            Normalize OTU counts and add a pseudo count
+score                   Score the results of BRACoD
+simulate_microbiome_counts
+                        Simulate microbiome counts
+summarize_trace         Summarize the results of BRACoD
