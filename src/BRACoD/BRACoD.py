@@ -196,6 +196,9 @@ def run_bracod(X_prop: np.array, Y: np.array, n_sample: int = 1000, n_burn: int 
     n_samples = X_prop.shape[0]
     n_bugs = X_prop.shape[1]
 
+    # Sometimes there can be issues with the R object not being a numpy array
+    Y = np.array(Y)
+
     # warning about too many bugs
     if n_bugs >= 300:
         logging.warning("Warning! you have a lot of bugs in here, did you threshold to the most abundant?")

@@ -14,11 +14,12 @@ test_that("remove null works", {
    sim_relab <- scale_counts(sim_counts)
    r <- remove_null(sim_relab, sim_y)
    
-   expect_equal(nrow(r[[1]]), len(r[[2]]))
+   expect_equal(nrow(r[[1]]), length(r[[2]]))
 })
 
 test_that("bracod runs", {
     data(obesity)
+    skip_if_no_bracod()
     r <- simulate_microbiome_counts(obesity)
 
     sim_counts <- r[[1]]

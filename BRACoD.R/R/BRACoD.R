@@ -1,7 +1,5 @@
 
 .onLoad <- function(libname, pkgname) {
-  packageStartupMessage("Welcome to BRACoD. You need the python version of BRACoD for this to work. Use the function install_bracod() to install it.")
-  BRACoD <<- reticulate::import("BRACoD", delay_load = TRUE)
 }
 
 
@@ -12,6 +10,7 @@
 #' reticulate::use_condaenv. 
 #' @param method passed to reticulate::py_install
 #' @param conda passed to reticulate::py_install
+#' @return no return value
 #' @export
 install_bracod <- function(method = "auto", conda = "auto") {
   reticulate::py_install("BRACoD", method = method, conda = conda, pip=TRUE)
@@ -37,8 +36,10 @@ install_bracod <- function(method = "auto", conda = "auto") {
 #' @param corr_value the bug-bug correlation value you want to include in the simulation
 #' @param return_absolute returns the abosulte abundance values instead of the simulated microbiome counts
 #' @param seed random seed for reproducibility
+#' @return a list containing 1) the simulated count data 2) the simulated environmental variable and 3) the simulated contribution coefficients
 #' @export
 simulate_microbiome_counts <- function(df, n_contributors = 20, coeff_contributor = 0.0, min_ab_contributor = -9, sd_Y = 1.0, n_reads = 100000, var_contributor = 5.0, use_uniform = TRUE, n_samples_use = NULL, corr_value = NULL,  return_absolute = FALSE, seed = NULL) {
+  BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$simulate_microbiome_counts(df, n_contributors = n_contributors, coeff_contributor = coeff_contributor, min_ab_contributor = min_ab_contributor, sd_Y = sd_Y, n_reads = n_reads, var_contributor = var_contributor, use_uniform = use_uniform, n_samples_use = n_samples_use, corr_value = corr_value, return_absolute = return_absolute, seed = seed))
 }
 
@@ -48,8 +49,10 @@ simulate_microbiome_counts <- function(df, n_contributors = 20, coeff_contributo
 #' BRACoD requires relative abundance and cannot handle zeros, so this function
 #' adds a small pseudo count (1/10th the smallest non-zero value).
 #' @param df_counts A dataframe of OTU counts. Samples are rows and bacteria are columns.
+#' @return a dataframe of relative abundance data
 #' @export
 scale_counts <- function(df_counts) {
+  BRACoD <- reticulate::import("BRACoD")
   # Check if this is legitimately counts data
   stopifnot(all(apply(df_counts, 1, function(x) all(x == as.integer(x)))))
   
@@ -58,6 +61,29 @@ scale_counts <- function(df_counts) {
 
   return(BRACoD$scale_counts(df_counts))
 }
+
+#' Threshold your microbiome counts data
+#'
+#' This function removes samples below a minimum counts and bacteria below a minimum log abundance.
+#' Run this before running BRACoD because the algorithm does not perform well when there are many
+#' low abundance bacteria that are only present in a few samples.
+#' @param df_counts A dataframe of OTU counts. Samples are rows and bacteria are columns.
+#' @param min_counts threshold samples with fewer than this many counts
+#' @param min_ab_log threshold bacteria whose average log abundance is below this
+#' @return a dataframe of microbiome counts
+#' @export
+threshold_count_data <- function(df_counts, min_counts = 1000, min_ab_log=-9) {
+  BRACoD <- reticulate::import("BRACoD")
+
+  # Check if this is legitimately counts data
+  stopifnot(all(apply(df_counts, 1, function(x) all(x == as.integer(x)))))
+
+  # Frequently, R and python conversion results in a "double" dataframe that has counts data. We need to fix that
+  df_counts <- t(apply(df_counts, 1, function(x) as.integer(x)))
+
+  return(BRACoD$threshold_count_data(df_counts, min_counts=min_counts, min_ab_log=min_ab_log))
+}
+
 
 #' Run the main BRACoD algorithm
 #'
@@ -68,6 +94,7 @@ scale_counts <- function(df_counts) {
 #' @param n_sample number of posterior samples.
 #' @param n_burn number of burn-in steps before actual sampling stops.
 #' @param njobs number of parallel MCMC chains to run.
+#' @return the pymc trace object which holds the samples of the posterior distribution
 #' @export
 #' @examples
 #' data(obesity)
@@ -78,6 +105,7 @@ scale_counts <- function(df_counts) {
 #' sim_relab <- scale_counts(sim_counts)
 #' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
 run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
+  BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$run_bracod(df_relab, env_var, n_sample = n_sample, n_burn=n_burn, njobs=njobs))
 }
 
@@ -91,11 +119,13 @@ run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
 #' @param trace the pymc3 object that is the output of run_bracod()
 #' @param bug_names optional, a list of names of the bacteria to include in the results
 #' @param cutoff this is the cutoff on the average inclusion for inclusion
+#' @return a dataframe with information about the bacteria that BRACoD identified
 #' @export
 #' @examples
 #' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
 #' df_summary <- summarize_trace(trace, colnames(sim_relab))
 summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
+  BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$summarize_trace(trace, bug_names, cutoff))
 }
 
@@ -105,6 +135,7 @@ summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
 #' the ground truth, ie. if this is simulated data.
 #' @param bugs_identified a list of integers corresponding to the indicies of the bugs you identified with BRACoD
 #' @param bugs_actual a list of integers corresponding to the indicies of the bugs that truely contribute to butyrate levels
+#' @return a list containing 1) the precision 2) the recall 3) the f1 metric
 #' @export
 #' @examples
 #' df_summary <- summarize_trace(trace, colnames(sim_relab))
@@ -119,6 +150,7 @@ summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
 #' 
 #' print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f",precision, recall, f1))
 score <- function(bugs_identified, bugs_actual) {
+  BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$score(bugs_identified, bugs_actual))
 }
 
@@ -129,8 +161,10 @@ score <- function(bugs_identified, bugs_actual) {
 #' the corresponding samples in your relative abundance data.
 #' @param df_relab microbiome relative abundance data in a dataframe
 #' @param Y values of the environmental variable
+#' @return a list containing 1) the relative abundance data and 2) the Y values
 #' @export
 remove_null <- function(df_relab, Y) {
+  BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$remove_null(df_relab, Y))
 }
 
@@ -143,8 +177,10 @@ remove_null <- function(df_relab, Y) {
 #' (beta). The convergence tests that are included here focus on evaluating those two variables.
 #' @param trace the output of run_bracod()
 #' @param df_relab the microbiome relative abundance
+#' @return no return value
 #' @export
 convergence_tests <- function(trace, df_relab) {
+  BRACoD <- reticulate::import("BRACoD")
   BRACoD$convergence_tests(trace, df_relab)
 }
 
