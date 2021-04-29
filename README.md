@@ -1,4 +1,4 @@
-# BRACoD
+# BRACoD: Bayesian Regression Analysis of Compositional Data
 
 ### Installation
 
