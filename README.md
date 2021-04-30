@@ -109,7 +109,7 @@ There is also an R interface, which depends on the python version being installe
 6. Try with your real data. We have included some functions to help you threshold and process your data
     
     ```R
-    df_counts <- threshold_counts(df_counts)
+    df_counts <- threshold_count_data(df_counts)
     df_rel <- scale_counts(df_counts)
     r <- remove_null(df_rel, Y)
     df_rel <- r[[1]]
