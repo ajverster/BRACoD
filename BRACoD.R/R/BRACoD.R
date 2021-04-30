@@ -184,3 +184,10 @@ convergence_tests <- function(trace, df_relab) {
   BRACoD$convergence_tests(trace, df_relab)
 }
 
+
+#' test function
+#'
+#' @export
+zzz <- function() {
+	print("Hi")
+}
