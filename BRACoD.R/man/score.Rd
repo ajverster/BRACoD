@@ -11,7 +11,23 @@ score(bugs_identified, bugs_actual)
 
 \item{bugs_actual}{a list of integers corresponding to the indicies of the bugs that truely contribute to butyrate levels}
 }
+\value{
+a list containing 1) the precision 2) the recall 3) the f1 metric
+}
 \description{
 This calculate the precision, recall and F1 of your BRACoD results if you know
 the ground truth, ie. if this is simulated data.
+}
+\examples{
+df_summary <- summarize_trace(trace, colnames(sim_relab))
+bugs_identified <- df_summary$bugs
+bugs_actual <- which(contributions != 0)
+
+r <- score(bugs_identified, bugs_actual)
+
+precision <- r[[1]]
+recall <- r[[2]]
+f1 <- r[[3]]
+
+print(sprintf("Precision: \%.2f, Recall: \%.2f, F1: \%.2f",precision, recall, f1))
 }

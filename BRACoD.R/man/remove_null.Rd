@@ -11,6 +11,9 @@ remove_null(df_relab, Y)
 
 \item{Y}{values of the environmental variable}
 }
+\value{
+a list containing 1) the relative abundance data and 2) the Y values
+}
 \description{
 This will remove samples that are NULL in the environmental variable, as well as
 the corresponding samples in your relative abundance data.

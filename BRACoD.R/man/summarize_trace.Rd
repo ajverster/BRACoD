@@ -13,9 +13,16 @@ summarize_trace(trace, bug_names = NULL, cutoff = 0.3)
 
 \item{cutoff}{this is the cutoff on the average inclusion for inclusion}
 }
+\value{
+a dataframe with information about the bacteria that BRACoD identified
+}
 \description{
 This summarizes the trace object that run_bracod() returns. It returns a dataframe
 that contains two parameters of interest, the average inclusion (p) and the average
 coefficient (beta), telling you the association between that bacteria and the environmental
 variable
+}
+\examples{
+trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
+df_summary <- summarize_trace(trace, colnames(sim_relab))
 }

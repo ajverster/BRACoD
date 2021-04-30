@@ -9,6 +9,9 @@ scale_counts(df_counts)
 \arguments{
 \item{df_counts}{A dataframe of OTU counts. Samples are rows and bacteria are columns.}
 }
+\value{
+a dataframe of relative abundance data
+}
 \description{
 BRACoD requires relative abundance and cannot handle zeros, so this function
 adds a small pseudo count (1/10th the smallest non-zero value).

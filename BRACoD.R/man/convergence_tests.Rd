@@ -11,6 +11,9 @@ convergence_tests(trace, df_relab)
 
 \item{df_relab}{the microbiome relative abundance}
 }
+\value{
+no return value
+}
 \description{
 You may get errors are divergence of some variables after pymc3 samples the posterior.
 We are not overly concerned about some of the variables, such as the variance, rather

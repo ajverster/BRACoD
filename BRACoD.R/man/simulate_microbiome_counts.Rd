@@ -44,6 +44,9 @@ simulate_microbiome_counts(
 
 \item{seed}{random seed for reproducibility}
 }
+\value{
+a list containing 1) the simulated count data 2) the simulated environmental variable and 3) the simulated contribution coefficients
+}
 \description{
 Each bacteria's absolute abundance is simulated from a lognormal distribution.
 Then, convert each sample to relative abundance, and simulate sequencing counts
