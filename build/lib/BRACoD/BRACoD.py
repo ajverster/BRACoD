@@ -154,7 +154,7 @@ def remove_null(X, Y):
     return X, Y
 
 
-def threshold_count_data(df, min_counts = 1000, min_ab_log=-9):
+def threshold_count_data(df, min_counts = 1000, min_ab=1e-4):
     assert 'int' in str(df.iloc[:,0].dtype), "This is not counts data"
 
     if min_counts is not None:
@@ -164,8 +164,8 @@ def threshold_count_data(df, min_counts = 1000, min_ab_log=-9):
     df_rel = df.apply(lambda x: x / np.sum(x),1)
     pseudo = np.min(df_rel[df_rel > 0]) / 10.0
 
-    mu = df_rel.apply(lambda x: np.mean(np.log(x + pseudo)), 0)
-    df = df.loc[:,mu > min_ab_log]
+    mu = df_rel.apply(lambda x: np.mean(x), 0)
+    df = df.loc[:,mu > min_ab]
     return df
 
 

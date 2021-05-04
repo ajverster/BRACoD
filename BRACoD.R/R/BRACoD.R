@@ -72,7 +72,7 @@ scale_counts <- function(df_counts) {
 #' @param min_ab_log threshold bacteria whose average log abundance is below this
 #' @return a dataframe of microbiome counts
 #' @export
-threshold_count_data <- function(df_counts, min_counts = 1000, min_ab_log=-9) {
+threshold_count_data <- function(df_counts, min_counts = 1000, min_ab=1e-4) {
   BRACoD <- reticulate::import("BRACoD")
 
   # Check if this is legitimately counts data
@@ -84,7 +84,7 @@ threshold_count_data <- function(df_counts, min_counts = 1000, min_ab_log=-9) {
   rownames(df_counts_c) <- rownames(df_counts)
   colnames(df_counts_c) <- colnames(df_counts)
 
-  return(BRACoD$threshold_count_data(df_counts, min_counts=min_counts, min_ab_log=min_ab_log))
+  return(BRACoD$threshold_count_data(df_counts, min_counts=min_counts, min_ab=min_ab))
 }
 
 
