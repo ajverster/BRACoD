@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 setup.py
 data/OTUCounts_obesitystudy.csv
+data/SCFA_obesitystudy.csv
 src/BRACoD/BRACoD.py
 src/BRACoD/__init__.py
 src/BRACoD/simulations.py
