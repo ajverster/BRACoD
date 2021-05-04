@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: BRACoD
-Version: 0.2.6
+Version: 0.3.0
 Summary: BRACoD is a method to identify associations between bacteria and physiological variables in Microbiome data
 Home-page: https://github.com/ajverster/BRACoD/tree/main
 Author: ['Adrian Verster']
