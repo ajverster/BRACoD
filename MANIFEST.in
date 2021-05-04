@@ -1,1 +1,2 @@
 include data/OTUCounts_obesitystudy.csv
+include data/SCFA_obesitystudy.csv

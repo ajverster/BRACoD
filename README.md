@@ -16,7 +16,7 @@ There is also an R interface, which depends on the python version being installe
 
     ```python
     import BRACoD
-    sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.example_otu_data)
+    sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.df_counts_obesity)
     sim_relab = BRACoD.scale_counts(sim_counts)
     ```
 
@@ -51,9 +51,9 @@ There is also an R interface, which depends on the python version being installe
 6. Try with your real data. We have included some functions to help you threshold and process your data
     
     ```python
-    df_counts = BRACoD.threshold_count_data(df_counts)
+    df_counts = BRACoD.threshold_count_data(BRACoD.df_counts_obesity)
     df_rel = BRACoD.scale_counts(df_counts)
-    df_rel, Y = remove_null(df_rel, Y)
+    df_rel, Y = remove_null(df_rel, BRACoD.df_scfa_obesity["butyric"].values)
     trace = BRACoD.run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results = BRACoD.summarize_trace(trace, sim_counts.columns, 0.3)
     ```
@@ -65,7 +65,7 @@ There is also an R interface, which depends on the python version being installe
     ```R
     library('BRACoD.R')
     data(obesity)
-    r <- simulate_microbiome_counts(obesity)
+    r <- simulate_microbiome_counts(df_counts_obesity)
 
     sim_counts <- r[[1]]
     sim_y <- r[[2]]
@@ -109,13 +109,13 @@ There is also an R interface, which depends on the python version being installe
 6. Try with your real data. We have included some functions to help you threshold and process your data
     
     ```R
-    df_counts <- threshold_count_data(df_counts)
-    df_rel <- scale_counts(df_counts)
+    df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
+    df_rel <- scale_counts(df_counts_obesity_sub)
     r <- remove_null(df_rel, Y)
     df_rel <- r[[1]]
     Y <- r[[2]]
     
     trace <- run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
-    df_results <- summarize_trace(trace, sim_counts.columns, 0.3)
+    df_results <- summarize_trace(trace, colnames(df_counts_obesity_sub), 0.3)
     ```
 
