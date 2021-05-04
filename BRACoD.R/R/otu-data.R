@@ -8,4 +8,5 @@
 #'
 #' @format a DataFrame of 16S microbiome counts
 #'
-"obesity"
+"df_counts_obesity"
+"df_scfa"

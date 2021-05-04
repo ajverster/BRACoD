@@ -79,7 +79,10 @@ threshold_count_data <- function(df_counts, min_counts = 1000, min_ab_log=-9) {
   stopifnot(all(apply(df_counts, 1, function(x) all(x == as.integer(x)))))
 
   # Frequently, R and python conversion results in a "double" dataframe that has counts data. We need to fix that
-  df_counts <- t(apply(df_counts, 1, function(x) as.integer(x)))
+  df_counts_c <- t(apply(df_counts, 1, function(x) as.integer(x)))
+  df_counts_c <- data.frame(df_counts_c)
+  rownames(df_counts_c) <- rownames(df_counts)
+  colnames(df_counts_c) <- colnames(df_counts)
 
   return(BRACoD$threshold_count_data(df_counts, min_counts=min_counts, min_ab_log=min_ab_log))
 }
