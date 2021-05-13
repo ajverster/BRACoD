@@ -16,6 +16,7 @@ There is also an R interface, which depends on the python version being installe
 
     ```python
     import BRACoD
+    import numpy as np
     sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.df_counts_obesity)
     sim_relab = BRACoD.scale_counts(sim_counts)
     ```
@@ -111,7 +112,7 @@ There is also an R interface, which depends on the python version being installe
     ```R
     df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
     df_rel <- scale_counts(df_counts_obesity_sub)
-    r <- remove_null(df_rel, Y)
+    r <- remove_null(df_rel, df_scfa$butyric)
     df_rel <- r[[1]]
     Y <- r[[2]]
     

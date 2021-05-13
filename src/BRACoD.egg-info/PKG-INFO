@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: BRACoD
-Version: 0.3.0
+Version: 0.3.1
 Summary: BRACoD is a method to identify associations between bacteria and physiological variables in Microbiome data
 Home-page: https://github.com/ajverster/BRACoD/tree/main
 Author: ['Adrian Verster']
@@ -24,6 +24,7 @@ Description: # BRACoD: Bayesian Regression Analysis of Compositional Data
         
             ```python
             import BRACoD
+            import numpy as np
             sim_counts, sim_y, contributions = BRACoD.simulate_microbiome_counts(BRACoD.df_counts_obesity)
             sim_relab = BRACoD.scale_counts(sim_counts)
             ```
@@ -119,7 +120,7 @@ Description: # BRACoD: Bayesian Regression Analysis of Compositional Data
             ```R
             df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
             df_rel <- scale_counts(df_counts_obesity_sub)
-            r <- remove_null(df_rel, Y)
+            r <- remove_null(df_rel, df_scfa$butyric)
             df_rel <- r[[1]]
             Y <- r[[2]]
             

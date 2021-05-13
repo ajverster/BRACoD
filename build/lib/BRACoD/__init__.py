@@ -20,4 +20,4 @@ except:
     infile_scfa_data = pkg_resources.resource_stream(resource_package, resource_path_scfa)
 
 df_counts_obesity = pd.read_csv(infile_otu_data).T
-df_scfa_obesity = pd.read_csv(infile_scfa_data).T
+df_scfa_obesity = pd.read_csv(infile_scfa_data)
