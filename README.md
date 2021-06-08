@@ -95,7 +95,7 @@ There is also an R interface, which depends on the python version being installe
 5. Compare the results to the simulated truth
 
     ```R
-    taxon_identified <- df_results$taxon
+    taxon_identified <- df_results$taxon_num
     taxon_actual <- which(contributions != 0)
 
     r <- score(taxon_identified, taxon_actual)
