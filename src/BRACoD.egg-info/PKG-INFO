@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: BRACoD
-Version: 0.3.2
+Version: 0.3.3
 Summary: BRACoD is a method to identify associations between bacteria and physiological variables in Microbiome data
 Home-page: https://github.com/ajverster/BRACoD/tree/main
 Author: ['Adrian Verster']
@@ -54,7 +54,7 @@ There is also an R interface, which depends on the python version being installe
 5. Compare the results to the simulated truth
 
     ```python
-    taxon_identified = df_results["taxon"].values
+    taxon_identified = df_results["taxon_num"].values
     taxon_actual = np.where(contributions != 0)[0]
 
     precision, recall, f1 = BRACoD.score(taxon_identified, taxon_actual)
@@ -107,7 +107,7 @@ There is also an R interface, which depends on the python version being installe
 5. Compare the results to the simulated truth
 
     ```R
-    taxon_identified <- df_results$taxon
+    taxon_identified <- df_results$taxon_num
     taxon_actual <- which(contributions != 0)
 
     r <- score(taxon_identified, taxon_actual)

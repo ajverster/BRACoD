@@ -1,6 +1,6 @@
 import setuptools
 
-__version__ = '0.3.2'
+__version__ = '0.3.3'
 __author__ = ['Adrian Verster']
 __email__ = 'adrian.verster@canada.ca'
 

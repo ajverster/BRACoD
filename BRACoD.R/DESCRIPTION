@@ -1,6 +1,6 @@
 Package: BRACoD.R
 Title: BRACoD: Bayesian Regression Analysis of Compositional Data
-Version: 0.0.1.3
+Version: 0.0.1.4
 Authors@R: 
     person(given = "Adrian",
            family = "Verster",

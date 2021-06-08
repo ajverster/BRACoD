@@ -33,7 +33,7 @@ install_bracod <- function(method = "auto", conda = "auto") {
 #' @param var_contributor If you use a uniform distribution, this is the range of the distribution, with a normal distribution it is the variance used to simulate the contribution coefficient.
 #' @param use_uniform use a uniform distribution to simulate the contribution coefficient. Alternative is the normal distribution.
 #' @param n_samples_use number of microbiome samples to simulate. If NULL, uses the same number of samples as in your dataframe
-#' @param corr_value the bug-bug correlation value you want to include in the simulation
+#' @param corr_value the bacteria-bacteria correlation value you want to include in the simulation
 #' @param return_absolute returns the abosulte abundance values instead of the simulated microbiome counts
 #' @param seed random seed for reproducibility
 #' @return a list containing 1) the simulated count data 2) the simulated environmental variable and 3) the simulated contribution coefficients

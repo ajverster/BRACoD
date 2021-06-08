@@ -15,7 +15,6 @@ def scale_counts(df):
     """
     Takes a DataFrame of OTU counts and normalizes it for use with run_bracod()
     :param df: DataFrame of OTU counts
-    :param top_n_bugs: most abundant n bugs will be returned
     :return: A DataFrame of relative abundance data
     """
     df = pd.DataFrame(df)
@@ -85,12 +84,12 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
             difference = np.absolute(inclusion_1[found_uncertain] - inclusion_2[found_uncertain])
         
             if len(found_uncertain[difference > 0.1]) > 0:
-                 logging.warning("Warning! The following bugs were found in only one of the chains: {}".format(
+                 logging.warning("Warning! The following bacteria were found in only one of the chains: {}".format(
                     " ".join([str(x) for x in found_uncertain])))
 
         diff = check_chains_equal(trace)
         if diff is not None:
-            logging.warning("Warning! the following bugs are radically different between chains {}".format(" ".join([str(x) for x in diff])))
+            logging.warning("Warning! the following bacteria are radically different between chains {}".format(" ".join([str(x) for x in diff])))
 
 
         # Check the effective number of samples for the positive bugs
@@ -107,12 +106,12 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
                 problem_bugs = pos_values[np.where(effn_p[pos_values] < 200)[0]]
                 if df_otus is not None:
                     problem_bugs = df_otus.columns[problem_bugs]
-                logging.warning("The effective n for the p variable is less than 200 for the following bugs {}".format(problem_bugs))
+                logging.warning("The effective n for the p variable is less than 200 for the following bacteria {}".format(problem_bugs))
             if any(effn_betas_one[pos_values] <= 200):
                 problem_bugs = pos_values[np.where(effn_betas_one[pos_values] < 200)[0]]
                 if df_otus is not None:
                     problem_bugs = df_otus.columns[problem_bugs]
-                logging.warning("The effective n for the beta variable is less than 200 for the following bugs {}".format(problem_bugs))
+                logging.warning("The effective n for the beta variable is less than 200 for the following bacteria {}".format(problem_bugs))
 
         if (any(gr_p[pos_values] >= 1.2) | any(gr_betas_one[pos_values] >= 1.2)):
             logging.warning("Warning! Some parameters have a Gelman-Rubin statistic greater than 1.2.")
@@ -126,7 +125,7 @@ def summarize_trace(trace, taxon_names = None, inclusion_cutoff=0.30):
     :param trace: trace object from the pymc3 run
     :param taxon_names: Optional list of taxon names to include in the spreadsheet
     :param inclusion_cutoff: fraction of samples a bug must be selected to consider it positive
-    :return: dataframe with the inclusion probabilities, and regression coefficients for the included bugs
+    :return: dataframe with the inclusion probabilities, and regression coefficients for the included bacteria
     """
     inclusion_full, found_full = get_positives(trace, inclusion_cutoff)
 
@@ -201,10 +200,10 @@ def run_bracod(X_prop: np.array, Y: np.array, n_sample: int = 1000, n_burn: int 
 
     # warning about too many bugs
     if n_bugs >= 300:
-        logging.warning("Warning! you have a lot of bugs in here, did you threshold to the most abundant?")
+        logging.warning("Warning! you have a lot of bacteria in here, did you threshold to the most abundant?")
     assert np.isnan(Y).sum() == 0, "You have nan values in your environmental variable"
     assert np.sum(X_prop == 0).sum() == 0, "You have 0 values in your OTU abundance, you need a pseudo count"
-    assert np.allclose(X_prop.sum(1), 1, atol = 0.0001), "This is not relative abundance data with bugs as rows and microbiomes as columns"
+    assert np.allclose(X_prop.sum(1), 1, atol = 0.0001), "This is not relative abundance data with bacteria as rows and microbiomes as columns"
     assert Y.shape[0] == X_prop.shape[0], "Environmental variable must have the same number of samples as the OTU data"
 
     # Normalize
