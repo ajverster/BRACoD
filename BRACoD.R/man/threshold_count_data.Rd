@@ -4,14 +4,14 @@
 \alias{threshold_count_data}
 \title{Threshold your microbiome counts data}
 \usage{
-threshold_count_data(df_counts, min_counts = 1000, min_ab_log = -9)
+threshold_count_data(df_counts, min_counts = 1000, min_ab = 1e-04)
 }
 \arguments{
 \item{df_counts}{A dataframe of OTU counts. Samples are rows and bacteria are columns.}
 
 \item{min_counts}{threshold samples with fewer than this many counts}
 
-\item{min_ab_log}{threshold bacteria whose average log abundance is below this}
+\item{min_ab}{threshold bacteria whose average log abundance is below this}
 }
 \value{
 a dataframe of microbiome counts

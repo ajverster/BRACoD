@@ -69,7 +69,7 @@ scale_counts <- function(df_counts) {
 #' low abundance bacteria that are only present in a few samples.
 #' @param df_counts A dataframe of OTU counts. Samples are rows and bacteria are columns.
 #' @param min_counts threshold samples with fewer than this many counts
-#' @param min_ab_log threshold bacteria whose average log abundance is below this
+#' @param min_ab threshold bacteria whose average log abundance is below this
 #' @return a dataframe of microbiome counts
 #' @export
 threshold_count_data <- function(df_counts, min_counts = 1000, min_ab=1e-4) {
@@ -100,6 +100,7 @@ threshold_count_data <- function(df_counts, min_counts = 1000, min_ab=1e-4) {
 #' @return the pymc trace object which holds the samples of the posterior distribution
 #' @export
 #' @examples
+#' \dontrun{
 #' data(obesity)
 #' r <- simulate_microbiome_counts(obesity)
 #' sim_counts <- r[[1]]
@@ -107,6 +108,7 @@ threshold_count_data <- function(df_counts, min_counts = 1000, min_ab=1e-4) {
 #' contributions <- r[[3]]
 #' sim_relab <- scale_counts(sim_counts)
 #' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
+#' }
 run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
   BRACoD <- reticulate::import("BRACoD")
   return(BRACoD$run_bracod(df_relab, env_var, n_sample = n_sample, n_burn=n_burn, njobs=njobs))
@@ -120,41 +122,45 @@ run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
 #' coefficient (beta), telling you the association between that bacteria and the environmental
 #' variable
 #' @param trace the pymc3 object that is the output of run_bracod()
-#' @param bug_names optional, a list of names of the bacteria to include in the results
-#' @param cutoff this is the cutoff on the average inclusion for inclusion
+#' @param taxon_names optional, a list of names of the bacteria to include in the results
+#' @param cutoff this is the cutoff on the average inclusion for inclusion. We reccomend a value of 0.3, but you can lower the value to include less confident taxon or raise the cutoff to exclude them.
 #' @return a dataframe with information about the bacteria that BRACoD identified
 #' @export
 #' @examples
+#' \dontrun{
 #' trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
 #' df_summary <- summarize_trace(trace, colnames(sim_relab))
-summarize_trace <- function(trace, bug_names=NULL, cutoff=0.3) {
+#' }
+summarize_trace <- function(trace, taxon_names=NULL, cutoff=0.3) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$summarize_trace(trace, bug_names, cutoff))
+  return(BRACoD$summarize_trace(trace, taxon_names, cutoff))
 }
 
 #' Score the results of BRACoD
 #'
 #' This calculate the precision, recall and F1 of your BRACoD results if you know
 #' the ground truth, ie. if this is simulated data.
-#' @param bugs_identified a list of integers corresponding to the indicies of the bugs you identified with BRACoD
-#' @param bugs_actual a list of integers corresponding to the indicies of the bugs that truely contribute to butyrate levels
+#' @param taxon_identified a list of integers corresponding to the indicies of the taxon you identified with BRACoD
+#' @param taxon_actual a list of integers corresponding to the indicies of the taxon that truely contribute to butyrate levels
 #' @return a list containing 1) the precision 2) the recall 3) the f1 metric
 #' @export
 #' @examples
+#' \dontrun{
 #' df_summary <- summarize_trace(trace, colnames(sim_relab))
-#' bugs_identified <- df_summary$bugs
-#' bugs_actual <- which(contributions != 0)
+#' taxon_identified <- df_summary$taxon
+#' taxon_actual <- which(contributions != 0)
 #' 
-#' r <- score(bugs_identified, bugs_actual)
+#' r <- score(taxon_identified, taxon_actual)
 #' 
 #' precision <- r[[1]]
 #' recall <- r[[2]]
 #' f1 <- r[[3]]
 #' 
 #' print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f",precision, recall, f1))
-score <- function(bugs_identified, bugs_actual) {
+#' }
+score <- function(taxon_identified, taxon_actual) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$score(bugs_identified, bugs_actual))
+  return(BRACoD$score(taxon_identified, taxon_actual))
 }
 
 

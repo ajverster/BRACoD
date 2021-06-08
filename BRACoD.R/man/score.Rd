@@ -19,6 +19,7 @@ This calculate the precision, recall and F1 of your BRACoD results if you know
 the ground truth, ie. if this is simulated data.
 }
 \examples{
+\dontrun{
 df_summary <- summarize_trace(trace, colnames(sim_relab))
 bugs_identified <- df_summary$bugs
 bugs_actual <- which(contributions != 0)
@@ -30,4 +31,5 @@ recall <- r[[2]]
 f1 <- r[[3]]
 
 print(sprintf("Precision: \%.2f, Recall: \%.2f, F1: \%.2f",precision, recall, f1))
+}
 }

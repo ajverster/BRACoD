@@ -23,6 +23,8 @@ coefficient (beta), telling you the association between that bacteria and the en
 variable
 }
 \examples{
+\dontrun{
 trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
 df_summary <- summarize_trace(trace, colnames(sim_relab))
+}
 }

@@ -120,21 +120,21 @@ def convergence_tests(trace, df_otus = None, inclusion_cutoff=0.30):
         print("You need at least 2 chains to do convergence tests.")
 
 
-def summarize_trace(trace, bug_names = None, inclusion_cutoff=0.30):
+def summarize_trace(trace, taxon_names = None, inclusion_cutoff=0.30):
     """
     Summarizes the trace object from run_svss()
     :param trace: trace object from the pymc3 run
-    :param outfile: Optional savefile for a graph of the consistency of the run
+    :param taxon_names: Optional list of taxon names to include in the spreadsheet
     :param inclusion_cutoff: fraction of samples a bug must be selected to consider it positive
     :return: dataframe with the inclusion probabilities, and regression coefficients for the included bugs
     """
     inclusion_full, found_full = get_positives(trace, inclusion_cutoff)
 
-    Df = pd.DataFrame({"bugs": found_full, "inclusion_p": inclusion_full[found_full],"coefficients": trace.get_values('beta_slab').mean(0)[found_full]})
-    if bug_names is not None:
-        assert len(bug_names) == len(inclusion_full)
-        bug_names = np.array(bug_names)
-        Df["bug_names"] = bug_names[found_full]
+    Df = pd.DataFrame({"taxon_num": found_full, "inclusion_p": inclusion_full[found_full],"beta_coeff": trace.get_values('beta_slab').mean(0)[found_full]})
+    if taxon_names is not None:
+        assert len(taxon_names) == len(inclusion_full)
+        taxon_names = np.array(taxon_names)
+        Df["taxon_name"] = taxon_names[found_full]
 
     return Df
 

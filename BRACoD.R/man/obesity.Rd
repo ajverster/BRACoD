@@ -3,12 +3,19 @@
 \docType{data}
 \name{obesity}
 \alias{obesity}
+\alias{df_counts_obesity}
+\alias{df_counts_obesity,df_scfa}
+\alias{df_scfa}
 \title{Example microbiome data}
 \format{
-a DataFrame of 16S microbiome counts
+a DataFrame of 16S microbiome counts, and a dataframe with corresponding butyrate measurements
+
+An object of class \code{data.frame} with 119 rows and 1 columns.
 }
 \usage{
 data(obesity)
+
+df_scfa
 }
 \description{
 This data is mouse stool microbiome data from a study of obesity.

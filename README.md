@@ -42,10 +42,10 @@ There is also an R interface, which depends on the python version being installe
 5. Compare the results to the simulated truth
 
     ```python
-    bugs_identified = df_results["bugs"].values
-    bugs_actual = np.where(contributions != 0)[0]
+    taxon_identified = df_results["taxon_num"].values
+    taxon_actual = np.where(contributions != 0)[0]
 
-    precision, recall, f1 = BRACoD.score(bugs_identified, bugs_actual)
+    precision, recall, f1 = BRACoD.score(taxon_identified, taxon_actual)
     print("Precision: {}, Recall: {}, F1: {}".format(precision, recall, f1))
     ```
 
@@ -54,9 +54,9 @@ There is also an R interface, which depends on the python version being installe
     ```python
     df_counts = BRACoD.threshold_count_data(BRACoD.df_counts_obesity)
     df_rel = BRACoD.scale_counts(df_counts)
-    df_rel, Y = remove_null(df_rel, BRACoD.df_scfa_obesity["butyric"].values)
+    df_rel, Y = BRACoD.remove_null(df_rel, BRACoD.df_scfa_obesity["butyric"].values)
     trace = BRACoD.run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
-    df_results = BRACoD.summarize_trace(trace, sim_counts.columns, 0.3)
+    df_results = BRACoD.summarize_trace(trace, df_rel.columns, 0.3)
     ```
     
 ### R Walkthrough
@@ -95,10 +95,10 @@ There is also an R interface, which depends on the python version being installe
 5. Compare the results to the simulated truth
 
     ```R
-    bugs_identified <- df_results$bugs
-    bugs_actual <- which(contributions != 0)
+    taxon_identified <- df_results$taxon
+    taxon_actual <- which(contributions != 0)
 
-    r <- score(bugs_identified, bugs_actual)
+    r <- score(taxon_identified, taxon_actual)
     
     precision <- r[[1]]
     recall <- r[[2]]

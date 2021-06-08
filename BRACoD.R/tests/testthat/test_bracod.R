@@ -7,7 +7,7 @@ skip_if_no_bracod <- function() {
 test_that("remove null works", {
    data(obesity)
    skip_if_no_bracod()
-   r <- simulate_microbiome_counts(obesity)
+   r <- simulate_microbiome_counts(df_counts_obesity)
 
    sim_counts <- r[[1]]
    sim_y <- r[[2]]
@@ -20,7 +20,7 @@ test_that("remove null works", {
 test_that("bracod runs", {
     data(obesity)
     skip_if_no_bracod()
-    r <- simulate_microbiome_counts(obesity)
+    r <- simulate_microbiome_counts(df_counts_obesity)
 
     sim_counts <- r[[1]]
     sim_y <- r[[2]]

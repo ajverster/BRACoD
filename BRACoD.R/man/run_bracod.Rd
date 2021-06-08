@@ -25,6 +25,7 @@ Uses pymc3 to sample the posterior of the model to determine bacteria that are
 associated with your environmental variable.
 }
 \examples{
+\dontrun{
 data(obesity)
 r <- simulate_microbiome_counts(obesity)
 sim_counts <- r[[1]]
@@ -32,4 +33,5 @@ sim_y <- r[[2]]
 contributions <- r[[3]]
 sim_relab <- scale_counts(sim_counts)
 trace <- run_bracod(sim_relab, sim_y, n_sample = 1000, n_burn=1000, njobs=4)
+}
 }
