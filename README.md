@@ -6,9 +6,11 @@ Installation in python:
 
     pip install BRACoD
 
-There is also an R interface, which depends on the python version being installed. There is a helper function that will do it for you, but it might be easier to do it with pip. You can install via github or by CRAN.
+There is also an R interface, which depends on the python version being installed. There is a helper function that will do it for you, but it might be easier to do it with pip. You can install via CRAN.
 
     install.packages("BRACoD.R")
+
+Or you can install via github.
 
     devtools::install_github("ajverster/BRACoD/BRACoD.R")
 
