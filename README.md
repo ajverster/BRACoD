@@ -113,8 +113,8 @@ Or you can install via github.
     df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
     df_rel <- scale_counts(df_counts_obesity_sub)
     r <- remove_null(df_rel, df_scfa$butyric)
-    df_rel <- r[[1]]
-    Y <- r[[2]]
+    df_rel <- r$df_rel
+    Y <- r$Y
     
     trace <- run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results <- summarize_trace(trace, colnames(df_counts_obesity_sub), 0.3)
