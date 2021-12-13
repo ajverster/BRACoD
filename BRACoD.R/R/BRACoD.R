@@ -40,7 +40,8 @@ install_bracod <- function(method = "auto", conda = "auto") {
 #' @export
 simulate_microbiome_counts <- function(df, n_contributors = 20, coeff_contributor = 0.0, min_ab_contributor = -9, sd_Y = 1.0, n_reads = 100000, var_contributor = 5.0, use_uniform = TRUE, n_samples_use = NULL, corr_value = NULL,  return_absolute = FALSE, seed = NULL) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$simulate_microbiome_counts(df, n_contributors = n_contributors, coeff_contributor = coeff_contributor, min_ab_contributor = min_ab_contributor, sd_Y = sd_Y, n_reads = n_reads, var_contributor = var_contributor, use_uniform = use_uniform, n_samples_use = n_samples_use, corr_value = corr_value, return_absolute = return_absolute, seed = seed))
+  results <- BRACoD$simulate_microbiome_counts(df, n_contributors = n_contributors, coeff_contributor = coeff_contributor, min_ab_contributor = min_ab_contributor, sd_Y = sd_Y, n_reads = n_reads, var_contributor = var_contributor, use_uniform = use_uniform, n_samples_use = n_samples_use, corr_value = corr_value, return_absolute = return_absolute, seed = seed)
+  return(list(sim_counts=results[[1]],sim_y=results[[2]],contributions=results[[3]]))
 }
 
 
@@ -133,7 +134,10 @@ run_bracod <- function(df_relab, env_var, n_sample=1000, n_burn=1000, njobs=4) {
 #' }
 summarize_trace <- function(trace, taxon_names=NULL, cutoff=0.3) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$summarize_trace(trace, taxon_names, cutoff))
+  df <- BRACoD$summarize_trace(trace, taxon_names, cutoff)
+  # Python to R numbering
+  df$taxon_num <- df$taxon_num + 1
+  return(df)
 }
 
 #' Score the results of BRACoD
@@ -160,7 +164,8 @@ summarize_trace <- function(trace, taxon_names=NULL, cutoff=0.3) {
 #' }
 score <- function(taxon_identified, taxon_actual) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$score(taxon_identified, taxon_actual))
+  results <- BRACoD$score(taxon_identified, taxon_actual)
+  return(list(precision=results[[1]],recall=results[[2]],f1=results[[3]]))
 }
 
 
@@ -174,7 +179,8 @@ score <- function(taxon_identified, taxon_actual) {
 #' @export
 remove_null <- function(df_relab, Y) {
   BRACoD <- reticulate::import("BRACoD")
-  return(BRACoD$remove_null(df_relab, Y))
+  results <- BRACoD$remove_null(df_relab, Y)
+  return(list(df_rel=results[[1]],Y=results[[2]]))
 }
 
 
