@@ -72,9 +72,9 @@ Or you can install via github.
     data(obesity)
     r <- simulate_microbiome_counts(df_counts_obesity)
 
-    sim_counts <- r[[1]]
-    sim_y <- r[[2]]
-    contributions <- r[[3]]
+    sim_counts <- r$sim_counts
+    sim_y <- r$sim_y
+    contributions <- r$contributions
     sim_relab <- scale_counts(sim_counts)
     ```
 
@@ -104,11 +104,7 @@ Or you can install via github.
 
     r <- score(taxon_identified, taxon_actual)
     
-    precision <- r[[1]]
-    recall <- r[[2]]
-    f1 <- r[[3]]
-
-    print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f",precision, recall, f1))
+    print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f", r$precision, r$recall, r$f1))
     ```
 
 6. Try with your real data. We have included some functions to help you threshold and process your data
@@ -117,8 +113,8 @@ Or you can install via github.
     df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
     df_rel <- scale_counts(df_counts_obesity_sub)
     r <- remove_null(df_rel, df_scfa$butyric)
-    df_rel <- r[[1]]
-    Y <- r[[2]]
+    df_rel <- r$df_rel
+    Y <- r$Y
     
     trace <- run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results <- summarize_trace(trace, colnames(df_counts_obesity_sub), 0.3)
