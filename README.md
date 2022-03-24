@@ -62,6 +62,8 @@ Or you can install via github.
     trace = BRACoD.run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results = BRACoD.summarize_trace(trace, df_rel.columns, 0.3)
     ```
+
+The taxonomy information for these OTUs is available at ```BRACoD.df_taxonomy```
     
 ### R Walkthrough
 

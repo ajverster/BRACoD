@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: BRACoD
-Version: 0.3.3
+Version: 0.3.5
 Summary: BRACoD is a method to identify associations between bacteria and physiological variables in Microbiome data
 Home-page: https://github.com/ajverster/BRACoD/tree/main
 Author: ['Adrian Verster']
@@ -18,7 +18,11 @@ Installation in python:
 
     pip install BRACoD
 
-There is also an R interface, which depends on the python version being installed. There is a helper function that will do it for you, but it might be easier to do it with pip.
+There is also an R interface, which depends on the python version being installed. There is a helper function that will do it for you, but it might be easier to do it with pip. You can install via CRAN.
+
+    install.packages("BRACoD.R")
+
+Or you can install via github.
 
     devtools::install_github("ajverster/BRACoD/BRACoD.R")
 
@@ -70,6 +74,8 @@ There is also an R interface, which depends on the python version being installe
     trace = BRACoD.run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results = BRACoD.summarize_trace(trace, df_rel.columns, 0.3)
     ```
+
+The taxonomy information for these OTUs is available at ```BRACoD.df_taxonomy```
     
 ### R Walkthrough
 
@@ -80,9 +86,9 @@ There is also an R interface, which depends on the python version being installe
     data(obesity)
     r <- simulate_microbiome_counts(df_counts_obesity)
 
-    sim_counts <- r[[1]]
-    sim_y <- r[[2]]
-    contributions <- r[[3]]
+    sim_counts <- r$sim_counts
+    sim_y <- r$sim_y
+    contributions <- r$contributions
     sim_relab <- scale_counts(sim_counts)
     ```
 
@@ -112,11 +118,7 @@ There is also an R interface, which depends on the python version being installe
 
     r <- score(taxon_identified, taxon_actual)
     
-    precision <- r[[1]]
-    recall <- r[[2]]
-    f1 <- r[[3]]
-
-    print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f",precision, recall, f1))
+    print(sprintf("Precision: %.2f, Recall: %.2f, F1: %.2f", r$precision, r$recall, r$f1))
     ```
 
 6. Try with your real data. We have included some functions to help you threshold and process your data
@@ -125,8 +127,8 @@ There is also an R interface, which depends on the python version being installe
     df_counts_obesity_sub <- threshold_count_data(df_counts_obesity)
     df_rel <- scale_counts(df_counts_obesity_sub)
     r <- remove_null(df_rel, df_scfa$butyric)
-    df_rel <- r[[1]]
-    Y <- r[[2]]
+    df_rel <- r$df_rel
+    Y <- r$Y
     
     trace <- run_bracod(df_rel, Y, n_sample = 1000, n_burn=1000, njobs=4)
     df_results <- summarize_trace(trace, colnames(df_counts_obesity_sub), 0.3)

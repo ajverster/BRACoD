@@ -41,7 +41,7 @@ def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor
             Sigma[j,i] = corr_value * np.sqrt(var[j] * var[i])
 
     # Simulate log absolute abundances
-    sim_absolute_log = np.random.multivariate_normal(mean=mu, cov=Sigma, size=n_samples_use)
+    sim_absolute_log = np.random.multivariate_normal(mean=mu, cov=Sigma, size=int(n_samples_use))
     n_decoys = sim_absolute_log.shape[1] - n_contributors
 
     X = sim_absolute_log
@@ -67,14 +67,13 @@ def simulate_microbiome_counts(df_counts, n_contributors = 20, coeff_contributor
     X_counts = np.apply_along_axis(lambda x: np.random.multinomial(int(n_reads), x), 1, X_rel)
     df_counts = pd.DataFrame(X_counts)
     df_counts.columns = df_relab.columns
-    df_counts.index = df_relab.index
+    df_counts.index = df_relab.index[:df_counts.shape[0],]
     return df_counts, Y, beta
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--infile_otus", help="csv of 16S sequencing counts that will be used as a model for data simulation")
-    #TODO: Add some simulation parameters in here
     args = parser.parse_args()
 
     df_counts = pd.read_csv(args.infile_otus)

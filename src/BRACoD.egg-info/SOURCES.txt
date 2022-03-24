@@ -12,4 +12,5 @@ src/BRACoD.egg-info/requires.txt
 src/BRACoD.egg-info/top_level.txt
 src/BRACoD/data/OTUCounts_obesitystudy.csv
 src/BRACoD/data/SCFA_obesitystudy.csv
+src/BRACoD/data/Taxonomy.csv
 src/BRACoD/data/__init__.py
